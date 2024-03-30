@@ -5,8 +5,6 @@ function Sort() {
   const [selected, setSelected] = useState(0)
   const list = ['популярности', 'цене', 'алфавиту']
   const sortName = list[selected]
-
-
   const onClickListItem = (i) => {
     setSelected(i)
     setOpen(false)
