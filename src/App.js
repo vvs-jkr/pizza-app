@@ -7,16 +7,28 @@ import { Routes, Route } from 'react-router-dom'
 import React, { useState } from 'react'
 
 import './scss/app.scss'
+// import { decrement, increment } from './redux/slices/filterSlice'
 
 export const SearchContext = React.createContext()
 
 function App() {
   const [searchValue, setSearchValue] = useState('')
 
-  console.log(searchValue, 'Input')
-
   return (
     <div className="wrapper">
+      {/* <button
+        aria-label="Increment value"
+        onClick={() => dispatch(increment())}
+      >
+        Increment
+      </button>
+      <span>{count}</span>
+      <button
+        aria-label="Decrement value"
+        onClick={() => dispatch(decrement())}
+      >
+        Decrement
+      </button> */}
       <SearchContext.Provider value={{ searchValue, setSearchValue }}>
         <Header />
         <div className="content">
