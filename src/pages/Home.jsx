@@ -5,13 +5,14 @@ import Skeleton from '../components/PizzaBlock/Skeleton'
 import React from 'react'
 import Pagination from '../components/Pagination'
 import { useDispatch, useSelector } from 'react-redux'
+import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice.js'
+import { Link } from 'react-router-dom'
+
 import {
-  selectFilter,
+selectFilter,
   setCategoryId,
   setCurrentPage,
 } from '../redux/slices/filterSlice'
-import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice.js'
-// import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
   //   const navigate = useNavigate()
@@ -58,7 +59,11 @@ const Home = () => {
     getPizzas()
   }, [categoryId, sort.sortProperty, searchValue, currentPage])
 
-  const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)
+  const pizzas = items.map((obj) => (
+    <Link to={`/pizza/${obj.id}`}>
+      <PizzaBlock {...obj} />
+    </Link>
+  ))
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
   ))
