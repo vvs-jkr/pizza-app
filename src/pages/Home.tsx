@@ -9,26 +9,24 @@ import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice.js'
 import { Link } from 'react-router-dom'
 
 import {
-selectFilter,
+  selectFilter,
   setCategoryId,
   setCurrentPage,
 } from '../redux/slices/filterSlice'
 
-const Home = () => {
-  //   const navigate = useNavigate()
+const Home: React.FC = () => {
   const dispatch = useDispatch()
-  //   const isMounted = React.useRef(false)
 
   const { items, status } = useSelector(selectPizzaData)
   const { categoryId, sort, currentPage, searchValue } =
     useSelector(selectFilter)
 
-  const onChangeCategory = (id) => {
-    dispatch(setCategoryId(id))
+  const onChangeCategory = (index: number) => {
+    dispatch(setCategoryId(index))
   }
 
-  const onChangePage = (number) => {
-    dispatch(setCurrentPage(number))
+  const onChangePage = (page: number) => {
+    dispatch(setCurrentPage(page))
   }
 
   const getPizzas = async () => {
@@ -38,6 +36,7 @@ const Home = () => {
     const search = searchValue ? `&search=${searchValue}` : ''
 
     dispatch(
+      // @ts-ignore
       fetchPizzas({
         sortBy,
         order,
@@ -59,7 +58,7 @@ const Home = () => {
     getPizzas()
   }, [categoryId, sort.sortProperty, searchValue, currentPage])
 
-  const pizzas = items.map((obj) => (
+  const pizzas = items.map((obj: any) => (
     <Link to={`/pizza/${obj.id}`}>
       <PizzaBlock {...obj} />
     </Link>
@@ -71,14 +70,18 @@ const Home = () => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories value={categoryId} onChangeCategory={onChangeCategory} />
+        <Categories
+          value={categoryId}
+          onChangeCategory={onChangeCategory}
+          getCategories={() => {}}
+        />
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === 'error' ? (
         <div className="content__error-info">
           <h2>
-            Произошла ошибка <icon>😕</icon>
+            Произошла ошибка <span>😕</span>
           </h2>
           <p>
             К сожалению, не удалось получить пиццы. Попробуйте повторить попытку

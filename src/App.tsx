@@ -4,7 +4,6 @@ import FullPizza from './pages/FullPizza'
 import NotFound from './pages/NotFound'
 
 import { Routes, Route } from 'react-router-dom'
-import React from 'react'
 
 import './scss/app.scss'
 import MainLayout from './layouts/MainLayout'
