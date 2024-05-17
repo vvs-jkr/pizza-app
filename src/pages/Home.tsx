@@ -1,27 +1,15 @@
 import Categories from '../components/Categories'
 import PizzaBlock from '../components/PizzaBlock'
-import Sort, { sortList } from '../components/Sort'
+import Sort from '../components/Sort'
 import Skeleton from '../components/PizzaBlock/Skeleton'
 import React from 'react'
 import Pagination from '../components/Pagination'
 import { useSelector } from 'react-redux'
-import {
-  fetchPizzas,
-  SearchPizzaParams,
-  selectPizzaData,
-} from '../redux/slices/pizzaSlice'
-import { Link } from 'react-router-dom'
-
-import {
-  FilterSliceState,
-  selectFilter,
-  setCategoryId,
-  setCurrentPage,
-  setFilters,
-  SortPropertyEnum,
-} from '../redux/slices/filterSlice'
+import { selectFilter } from '../redux/filter/selectors'
 import { useAppDispatch } from '../redux/store'
-import qs from 'qs'
+import { selectPizzaData } from '../redux/pizza/selectors'
+import { setCategoryId, setCurrentPage } from '../redux/filter/slice'
+import { fetchPizzas } from '../redux/pizza/asyncActions'
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -30,9 +18,9 @@ const Home: React.FC = () => {
   const { categoryId, sort, currentPage, searchValue } =
     useSelector(selectFilter)
 
-  const onChangeCategory = (index: number) => {
+  const onChangeCategory = React.useCallback((index: number) => {
     dispatch(setCategoryId(index))
-  }
+  }, [])
 
   const onChangePage = (page: number) => {
     dispatch(setCurrentPage(page))
@@ -84,7 +72,7 @@ const Home: React.FC = () => {
   //     }
   //   })
 
-  const pizzas = items.map((obj: any) => <PizzaBlock {...obj} />)
+  const pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />)
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
   ))
@@ -97,7 +85,7 @@ const Home: React.FC = () => {
           onChangeCategory={onChangeCategory}
           getCategories={() => {}}
         />
-        <Sort />
+        <Sort value={sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === 'error' ? (
